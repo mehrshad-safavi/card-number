@@ -16,6 +16,13 @@ abstract class Receipt implements ReceiptInterface
     protected $referenceId;
 
     /**
+     * Masked card number witch the payment was made from.
+     *
+     * @var string
+     */
+    protected $cardNo;
+
+    /**
      * payment driver's name.
      *
      * @var string
@@ -35,10 +42,11 @@ abstract class Receipt implements ReceiptInterface
      * @param $driver
      * @param $referenceId
      */
-    public function __construct($driver, $referenceId)
+    public function __construct($driver, $referenceId, $cardNo = '')
     {
         $this->driver = $driver;
         $this->referenceId = $referenceId;
+        $this->cardNo = $cardNo;
         $this->date = Carbon::now();
     }
 
@@ -60,6 +68,16 @@ abstract class Receipt implements ReceiptInterface
     public function getReferenceId() : string
     {
         return (string) $this->referenceId;
+    }
+
+    /**
+     * Retrieve payment card number.
+     *
+     * @return string
+     */
+    public function getCardNo() : string
+    {
+        return (string) $this->cardNo;
     }
 
     /**
