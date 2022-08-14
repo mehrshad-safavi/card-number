@@ -149,7 +149,7 @@ class Payir extends Driver
             $this->notVerified(null);
         }
 
-        return $this->createReceipt($body['transId']);
+        return $this->createReceipt($body['transId'], $body['cardNumber']);
     }
 
     /**
@@ -159,9 +159,9 @@ class Payir extends Driver
      *
      * @return Receipt
      */
-    protected function createReceipt($referenceId)
+    protected function createReceipt($referenceId, $cardNo)
     {
-        $receipt = new Receipt('payir', $referenceId);
+        $receipt = new Receipt('payir', $referenceId, $cardNo);
 
         return $receipt;
     }
