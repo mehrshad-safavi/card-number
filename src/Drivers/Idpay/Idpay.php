@@ -127,7 +127,7 @@ class Idpay extends Driver
      *
      * @return RedirectionForm
      */
-    public function pay() : RedirectionForm
+    public function pay(): RedirectionForm
     {
         $apiUrl = $this->settings->apiPaymentUrl;
 
@@ -136,7 +136,7 @@ class Idpay extends Driver
             $apiUrl = $this->settings->apiSandboxPaymentUrl;
         }
 
-        $payUrl = $apiUrl.$this->invoice->getTransactionId();
+        $payUrl = $apiUrl . $this->invoice->getTransactionId();
 
         return $this->redirectWithForm($payUrl, [], 'GET');
     }
@@ -149,7 +149,7 @@ class Idpay extends Driver
      * @throws InvalidPaymentException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function verify() : ReceiptInterface
+    public function verify(): ReceiptInterface
     {
         $data = [
             'id' => $this->invoice->getTransactionId() ?? Request::input('id'),
@@ -177,7 +177,7 @@ class Idpay extends Driver
             $this->notVerified($errorCode);
         }
 
-        return $this->createReceipt($body['track_id']);
+        return $this->createReceipt($body['track_id'], $body['payment']['card_no']);
     }
 
     /**
@@ -187,9 +187,9 @@ class Idpay extends Driver
      *
      * @return Receipt
      */
-    protected function createReceipt($referenceId)
+    protected function createReceipt($referenceId, $cardNo)
     {
-        $receipt = new Receipt('idpay', $referenceId);
+        $receipt = new Receipt('idpay', $referenceId, $cardNo);
 
         return $receipt;
     }
